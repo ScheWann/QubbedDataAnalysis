@@ -42,7 +42,8 @@ def get_mdasi_rename_dict():
                 'Fudays': 'followup_days',
                 'bc':'bootcamp_therapy',
                 'Performance_score': 'performance_score',
-                'm':'m_stage'
+                'm':'m_stage',
+                "STIEFEL_ID": "id",
                }
     return col_dict
 
@@ -90,8 +91,9 @@ def format_symptoms(df,
             'is_ajcc_8th_edition',
             'hpv','rt','ic',
 #             'nd','rt_type',
-            'concurrent','performance_score',
-            'os','followup_days','chemotherapy',
+            'concurrent',
+            # 'performance_score',
+            # 'os','followup_days','chemotherapy',
 #             'typetreatment','treatment2',
              'M6_mbs_digest',
               'baseline_mbs_digest',
@@ -160,7 +162,7 @@ def format_mdasi_columns(df):
     df.loc[:,'is_male'] = df.sex.apply(lambda x: x > 1)
     df.loc[:,'is_ajcc_8th_edition'] = df.ajcc_version.apply(lambda x : (x > 1 if not np.isnan(x) else -1))
     df.loc[:,'hpv'] = df.p16_hpv_postive.apply(lambda x: (x if x in [0,1] else -1))
-    df.loc[~df['os'].isnull(),'os'] = df.loc[~df['os'].isnull(),'os'].apply(lambda x: int('alive' in str(x.lower())))
+    # df.loc[~df['os'].isnull(),'os'] = df.loc[~df['os'].isnull(),'os'].apply(lambda x: int('alive' in str(x.lower())))
     #some weird formatting here
     df.loc[df.t_stage == 'tx','t_stage'].t_stage = 't1'
     df.loc[df.n_stage == 'nx','n_stage'].n_stage = 'n1'
