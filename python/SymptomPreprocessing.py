@@ -170,11 +170,11 @@ def format_mdasi_columns(df):
     df.loc[df.n_stage == 'NOS','n_stage'] = np.nan
     return format_symptoms(df)
 
-def filter_bad_mdasi_rows(df,missing_ratio_cutoff=.7):
+def filter_bad_mdasi_rows(df,missing_ratio_cutoff=.8):
     #drop things with these missing
-    required = ['baseline_mdasi_pain']
+    # required = ['baseline_mdasi_pain']
     print('before drop count',df.shape[0])
-    df = df.dropna(subset=required)
+    # df = df.dropna(subset=required)
     #drop values with too many missing symptoms
     scols = [c for c in df.columns if 'mdasi' in c]
     mean_null = df[scols].apply(lambda x: x.isnull().mean(),axis=1)
