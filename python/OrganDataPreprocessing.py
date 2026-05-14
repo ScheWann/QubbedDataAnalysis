@@ -238,9 +238,8 @@ class CamprtOrganData(OrganData):
         subdf = dist_df.loc[:, OrganData.roi_cols]
         dist_df.loc[:,'organ1'] = subdf.apply(lambda x: sorted(x)[1], axis=1)
         dist_df.loc[:,'organ2'] = subdf.apply(lambda x: sorted(x)[0], axis=1)
-        dist_df = dist_df.set_index(['organ1','organ2']).sort_index(kind='mergesort') #I just sort everthing alphabetically, may bug out otherwise idk
-        dist_df = dist_df.loc[:,OrganData.roi_dist_col]
-        return dist_df.reset_index()
+        dist_df = dist_df.groupby(['organ1','organ2'])[OrganData.roi_dist_col].mean().reset_index()
+        return dist_df.sort_values(['organ1','organ2'], kind='mergesort').reset_index(drop=True)
     
     def process_dose_file(self, dose_file, default_value = np.nan):
         dose_df = self.read_spatial_file(dose_file)
@@ -357,9 +356,8 @@ class MdasiOrganData(OrganData):
         subdf = dist_df.loc[:, OrganData.roi_cols]
         dist_df.loc[:,'organ1'] = subdf.apply(lambda x: sorted(x)[1], axis=1)
         dist_df.loc[:,'organ2'] = subdf.apply(lambda x: sorted(x)[0], axis=1)
-        dist_df = dist_df.set_index(['organ1','organ2']).sort_index(kind='mergesort') #I just sort everthing alphabetically, may bug out otherwise idk
-        dist_df = dist_df.loc[:,OrganData.roi_dist_col]
-        return dist_df.reset_index()
+        dist_df = dist_df.groupby(['organ1','organ2'])[OrganData.roi_dist_col].mean().reset_index()
+        return dist_df.sort_values(['organ1','organ2'], kind='mergesort').reset_index(drop=True)
     
     def process_dose_file(self, dose_file, default_value = np.nan):
         dose_df = self.read_spatial_file(dose_file)
